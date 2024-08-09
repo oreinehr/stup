@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import CadastroValidacao from './CadastroValidacao.js';
 import axios from 'axios';
 
 function Cadastro() {
-    const [mensagen, setMensagen] = useState('');
-   const [values, setValues] = useState({
+
+    const [mensagem, setMensagem] = useState('');
+
+    const [values, setValues] = useState({
         crp: '',
         nome: '',
         password: '',
         email: ''
     });
     const [errors, setErrors] = useState({});
+    
 
     const handleInput = (event) => {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
+
+    const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -33,13 +38,16 @@ function Cadastro() {
                 };
                 const response = await axios.post('http://localhost:5000/cadastro', data);
                 console.log('Cadastro realizado com sucesso:');
-                setMensagen('Cadastro realizado com sucesso:');
-                      
-            } catch (error) {
+
+                setTimeout(() => {
+                    navigate('/Login'); 
+                }, 2000);
+
+            }
+            catch (error) {
                 console.error('Erro ao cadastrar:', error);
             }
         }
-
     };
 
     return (
@@ -70,9 +78,10 @@ function Cadastro() {
                     </div>
                     <button type='submit' className='btn btn-success w-100'><strong>Cadastrar</strong></button>
                     <p className='pt-3 small'>Ludemo.com a melhor plataforma de auxilio profissional.</p>
-                    <p className='text-success'>{mensagen}</p>
+                    
                 </form>
-                <Link to="/" className='btn bt-primary border w-100'>Retornar para Login</Link>
+                <p className='text-success'>{mensagem}</p>
+                <Link to="/Login" className='btn bt-primary border w-100'>Retornar para Login</Link>
             </div>
         </div>
     );

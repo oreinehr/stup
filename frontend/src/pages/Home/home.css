@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#header-navbar{
+    background-color: white;
+}
+.nav{
+    background-color: fff;
+}
+.logo{
+    width: 15vw;
+}
+@media (max-width: 992px) {
+    .logo{
+    
+        width: 30vw;
+    }
+}
+.nav-link {
+    color: rgba(95, 122, 142, 1);
+    font-size: large;
+    font-family: "Raleway", sans-serif;
+}
+.nav-pills{
+    align-items: center;
+    text-align: center;
+}
+.btn-psi{
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    border-color: black;
+}
+.navbar-toggler{
+    background-color: rgba(95, 122, 142, 1);
+}
+.navbar-toggler-icon{
+    color: black;
+}
+/* carrosel */
+.container-carrousel{
+    border-bottom: solid #567ebb;
+}
+.carousel-caption {
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(50, 80, 120, 0.8); /* Cor de fundo semi-transparente */
+    border-radius: 10px;
+}
+.carousel-caption h1{
+    color: white;
+    font-size: 4em;
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+}
+#carrousel-btn{
+    width: 20vw;
+    background-color: white; 
+    border-color: rgb(80, 79, 79);
+    color: black; 
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: "Raleway", sans-serif;
+}
+.carousel-caption h5{
+    color: white;
+    font-family: "Raleway", sans-serif;
+    font-size: x-large;
+    font-weight: 600;
+}
+.carousel-caption p{
+    color: white;
+    font-family: "Raleway", sans-serif;
+}
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* Main-mobile */
+.Main-mobile {
+    background-image: url('../../assets/Design sem nome.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 60vh; 
+}
+.main-box{
+    background-color: rgba(50, 80, 120, 0.8);
+    border-radius: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-align: center;
+    align-items: center;
+    border: solid;
+    margin-top: 10vh;
+
+}
+.main-box h1{
+    color: white;
+    margin: 0;
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+}
+.main-box-btn{
+    width: 20vh;
+    background-color: white; 
+    border-color: rgb(80, 79, 79);
+    color: black; 
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: "Raleway", sans-serif;
+}
+.main-box p{
+    color: white;
+    font-family: "Raleway", sans-serif;
+}
+/* Cards */
+.card{
+    background-color: #d3f1fc;
+}
+/* pé que roda */
+footer {
+    bottom: 0;
+    width: 100%;
+    background-color: #1f1f20;
+    text-align: center;
+    padding: 30px;
+}
+footer p {
+    color: white;
+    margin: 0;
+}

@@ -5,6 +5,10 @@ class profissionalController {
     const result = await profissionalRepository.findAll();
     res.json(result);
   }
+  async login(req, res) {
+    const result = await profissionalRepository.login();
+    res.json(result);
+  }
 
   async show(req, res) {
     const id = req.params.id;

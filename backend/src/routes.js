@@ -7,6 +7,10 @@ router.get("/", (req, res) => {
   res.send("Servidor de rotas Ludemo Online.");
 });
 
+//rota de LOGIN
+router.get("/login", profissionalController.login);
+
+
 //para listar todas os profissionais
 router.get("/profissionais/list", profissionalController.index);
 

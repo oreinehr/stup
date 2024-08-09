@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import validaLogin from './LoginValidação';
+import axios from 'axios';
 
 function Login() {
     const [values, setValues] = useState({
@@ -8,16 +10,44 @@ function Login() {
         password: ''
     });
     const [errors, setErrors] = useState({});
-    
+
     const handleInput = (event) => {
-        setValues(prev => ({...prev, [event.target.name]: event.target.value}));
+        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
-    const handleSubmit = (event) => {
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        setErrors(validaLogin(values));
-        console.log('enviado');
+        
+        // Valida os valores do formulário
+        const validationErrors = validaLogin(values);
+        setErrors(validationErrors);
+        console.log('Erros de Validação:', validationErrors);
+        
+        // Verifica se todos os erros estão vazios
+        const hasErrors = Object.values(validationErrors).some(error => error !== '');
+
+        if (!hasErrors) {
+            try {
+                const data = {
+                    crp: values.crp,
+                    senha: values.password,
+                };
+                console.log('Enviando dados para o servidor:', data);
+                const response = await axios.post('http://localhost:5000/login', data);
+                console.log('Usuário encontrado com sucesso:', response.data);
+                setTimeout(() => {
+                    navigate('/dashboard'); 
+                }, 2000);
+            } catch (error) {
+                console.error('Erro ao autenticar usuário:', error);
+            }
+        } else {
+            console.log('Formulário contém erros de validação.');
+        }
     };
-    
+
     return (
         <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
             <div className='bg-white p-3 rounded h-70 '>

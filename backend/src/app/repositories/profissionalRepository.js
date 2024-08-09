@@ -15,6 +15,11 @@ class profissionalRepository {
     const sql = "SELECT * FROM profissional WHERE idprofissional=?";
     return consulta(sql, id, "Não foi possivel localizar este usuário  em ProfissionalRepository");
   }
+  login(crp,password) {
+    const sql = "SELECT * FROM profissional WHERE idprofissional=?";
+    return consulta(sql, crp, password, "Não foi possivel localizar este usuário  em ProfissionalRepository");
+  }
+
 
   update(info, id) {
     const sql = "UPDATE profissional SET ? WHERE idprofissional=?";
