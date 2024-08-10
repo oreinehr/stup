@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import validaLogin from './LoginValidação';
 import axios from 'axios';
+import { LayoutComponents } from '../../components/layoutComponents/layoutComponents.js';
+import '../../components/styles.css';
+
 
 function Login() {
     const [values, setValues] = useState({
-        crp: '',
-        password: ''
+        email: '',
+        senha: ''
     });
 
     const [errors, setErrors] = useState({});
@@ -21,23 +23,21 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         
-        // Valida os valores do formulário
         const validationErrors = validaLogin(values);
         setErrors(validationErrors);
         console.log('Erros de Validação:', validationErrors);
         
-        // Verifica se todos os erros estão vazios
         const hasErrors = Object.values(validationErrors).some(error => error !== '');
 
         if (!hasErrors) {
             try {
                 const data = {
-                    crp: values.crp,
-                    senha: values.password,
+                    email: values.email,
+                    senha: values.senha,
                 };
                 
                 console.log('Enviando dados para o servidor:', data);
-                const response = await axios.post('http://localhost:5000/login', data);
+                const response = await axios.post('http://localhost:5000/Login', data);
                 console.log('Usuário encontrado com sucesso:', response.data);
 
                 setTimeout(() => {
@@ -52,25 +52,39 @@ function Login() {
     };
 
     return (
-        <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
-            <div className='bg-white p-3 rounded h-70 '>
-                <form action='' onSubmit={handleSubmit}>
-                    <div className='mb-3'>
-                        <label htmlFor='crp'><strong>CRP</strong></label>
-                        <input type='text' name='crp' onChange={handleInput} placeholder='CRP do Profissional' className='form-control rounded-0' />
-                        <span>{errors.crp && <span className='text-danger' > {errors.crp} </span> }</span>
+        <LayoutComponents>
+        <div className='login-form'>
+            <div className='login-form-title'>
+                <h2><strong>Login</strong></h2>
+                <form className='login-form' action='' onSubmit={handleSubmit}>
+                    <div className='wrap-input'>
+                        <label className='form-label' htmlFor='email'><strong>Email</strong></label>
+                        <input type='text' 
+                        id='email' 
+                        name='email' 
+                        onChange={handleInput} 
+                        placeholder='Email' 
+                        className='input' />
+                        <span>{errors.email && <span className='text-danger'>{errors.email}</span>}</span>
                     </div>
                     <div className='mb-3'>
-                        <label htmlFor='password'><strong>Senha</strong></label>
-                        <input type='password' name='password' onChange={handleInput} placeholder='Senha' className='form-control rounded-0' />
-                        <span>{errors.password && <span className='text-danger' > {errors.password} </span> }</span>
+                        <label className='form-label' htmlFor='senha'><strong>Senha</strong></label>
+                        <input 
+                        type='password' 
+                        id='senha' 
+                        name='senha' 
+                        onChange={handleInput} 
+                        placeholder='Senha' 
+                        className='input' />
+                        <span>{errors.senha && <span className='text-danger'>{errors.senha}</span>}</span>
                     </div>
-                    <button type='submit' className='btn btn-success w-100'> <strong>Login</strong></button>
-                    <p className='pt-3 small' >Ludemo.com a melhor plataforma de auxilio profissional.</p>
-                    <Link to="/Cadastrar" className='btn btn-default border w-100 bg-light text-decoration-none'>Cadastrar</Link>
+                    <button type='submit' className='login-form-btn'><strong>Login</strong></button>
+                    <p className=' text small text-center m-4'>Style Up, Inc.</p>
+                    <Link to="/Cadastrar" className='m-4 mb-2 small text-center text-decoration-none'>Cadastrar</Link>
                 </form>
             </div>
         </div>
+        </LayoutComponents>
     );
 }
 

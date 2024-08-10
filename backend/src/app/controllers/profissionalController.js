@@ -9,16 +9,16 @@ class profissionalController {
     }
   }
 
-  async login(req, res) {
+  async Login(req, res) {
     try {
-      const info = req.body;
-      // console.log('Login request body:', info); // Adiciona log para verificar o corpo da requisição, checar se está vindo vazia do front
+      const user = req.body;
+      console.log('Login request body:', user); // Adiciona log para verificar o corpo da requisição, checar se está vindo vazia do front
 
-      if (!info.crp || !info.senha) {
-        return res.status(400).json({ message: 'CRP e senha são obrigatórios' });
+      if (!user.email || !user.senha) {
+        return res.status(400).json({ message: 'Emaill e senha são obrigatórios' });
       }
 
-      const result = await profissionalRepository.login(info);
+      const result = await profissionalRepository.Login(user);
       if (result.length === 0) {
         return res.status(404).json({ message: 'Usuário não encontrado' });
       }
@@ -42,8 +42,8 @@ class profissionalController {
 
   async store(req, res) {
     try {
-      const info = req.body;
-      const result = await profissionalRepository.create(info);
+      const user = req.body;
+      const result = await profissionalRepository.create(user);
       res.json(result);
     } catch (error) {
       res.status(500).json({ message: error });
@@ -52,9 +52,9 @@ class profissionalController {
 
   async update(req, res) {
     try {
-      const info = req.body;
+      const user = req.body;
       const id = req.params.id;
-      const result = await profissionalRepository.update(info, id);
+      const result = await profissionalRepository.update(user, id);
       res.json(result);
     } catch (error) {
       res.status(500).json({ message: error });

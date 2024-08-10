@@ -8,10 +8,9 @@ function Cadastro() {
     const [mensagem, setMensagem] = useState('');
 
     const [values, setValues] = useState({
-        crp: '',
+        email: '',
         nome: '',
-        password: '',
-        email: ''
+        senha: ''
     });
     const [errors, setErrors] = useState({});
     
@@ -31,10 +30,10 @@ function Cadastro() {
         if (Object.keys(validationErrors).length === 0) {
             try {
                 const data = {
-                    crp: values.crp,
+                    email: values.email,
                     nome: values.nome,
-                    senha: values.password,
-                    email: values.email
+                    senha: values.senha,
+                 
                 };
 
                 const response = await axios.post('http://localhost:5000/cadastro', data);
@@ -60,25 +59,20 @@ function Cadastro() {
                 <h2 className=''>Cadastro De Profissional</h2>
                 <form action='' onSubmit={handleSubmit}>
                     <div className='mb-3'>
-                        <label htmlFor='crp'><strong>CRP</strong></label>
-                        <input type='text' placeholder='CRP do Profissional' onChange={handleInput} name='crp' className='form-control rounded-0' />
-                        <span>{errors.crp && <span className='text-danger'>{errors.crp}</span>}</span>
+                        <label htmlFor='email'><strong>Email</strong></label>
+                        <input type='text' placeholder='Email' onChange={handleInput} name='email' className='form-control rounded-0' />
+                        <span>{errors.email && <span className='text-danger'>{errors.email}</span>}</span>
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='nome'><strong>Nome</strong></label>
-                        <input type='text' placeholder='Nome do Profissional' onChange={handleInput} name='nome' className='form-control rounded-0' />
+                        <input type='text' placeholder='Nome' onChange={handleInput} name='nome' className='form-control rounded-0' />
                         <span>{errors.nome && <span className='text-danger'>{errors.nome}</span>}</span>
                     </div>
                     <div className='mb-3'>
-                        <label htmlFor='password'><strong>Senha</strong></label>
+                        <label htmlFor='senha'><strong>Senha</strong></label>
                         <p style={{ fontSize: '12px' }}>A senha deve conter pelo menos 8 caracteres.</p>
-                        <input type='password' placeholder='Senha do Profissional' onChange={handleInput} name='password' className='form-control rounded-0' />
-                        <span>{errors.password && <span className='text-danger'>{errors.password}</span>}</span>
-                    </div>
-                    <div className='mb-3'>
-                        <label htmlFor='email'><strong>Email</strong></label>
-                        <input type='email' placeholder='Email do Profissional' onChange={handleInput} name='email' className='form-control rounded-0' />
-                        <span>{errors.email && <span className='text-danger'>{errors.email}</span>}</span>
+                        <input type='password' placeholder='Senha do Profissional' onChange={handleInput} name='senha' className='form-control rounded-0' />
+                        <span>{errors.senha && <span className='text-danger'>{errors.senha}</span>}</span>
                     </div>
                     <button type='submit' className='btn btn-success w-100'><strong>Cadastrar</strong></button>
                     <p className='pt-3 small'>Ludemo.com a melhor plataforma de auxilio profissional.</p>

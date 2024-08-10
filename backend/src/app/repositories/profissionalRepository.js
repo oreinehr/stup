@@ -1,34 +1,56 @@
 import { consulta } from "../database/conexao.js";
 
 class profissionalRepository {
-  create(info) {
-    const sql = "INSERT INTO profissional SET ?";
-    return consulta(sql, info, "Não foi possivel criar um novo usuário em ProfissionalRepository");
-  }
+    async create(user) {
+        const sql = "INSERT INTO users SET ?";
+        try {
+            return await consulta(sql, user, 'Ocorreu um erro ao inserir o usuário');
+        } catch (error) {
+            throw new Error('Ocorreu um erro ao inserir o usuário');
+        }
+    }
 
-  findAll() {
-    const sql = "SELECT * FROM profissional";
-    return consulta(sql, "Não foi possivel listar os usuários  em ProfissionalRepository ");
-  }
+    async findAll() {
+        const sql = "SELECT * FROM users";
+        try {
+            return await consulta(sql, [], 'Ocorreu um erro ao buscar todos os usuários');
+        } catch (error) {
+            throw new Error('Ocorreu um erro ao buscar todos os usuários');
+        }
+    }
 
-  findById(id) {
-    const sql = "SELECT * FROM profissional WHERE idprofissional=?";
-    return consulta(sql, id, "Não foi possivel localizar este usuário  em ProfissionalRepository");
-  }
+    async findById(id) {
+        const sql = "SELECT * FROM users WHERE id=?";
+        try {
+            return await consulta(sql, [id], 'Ocorreu um erro ao buscar o usuário');
+        } catch (error) {
+            throw new Error('Ocorreu um erro ao buscar o usuário');
+        }
+    }
 
-  login(info) {
-    const sql = "SELECT * FROM profissional WHERE crp=? AND senha=?";
-    return consulta(sql, [info.crp, info.senha], "Não foi possivel localizar este usuário em ProfissionalRepository");
-  }
+    async update(user, id) {
+        const sql = "UPDATE users SET ? WHERE id=?";
+        try {
+            return await consulta(sql, [user, id], 'Ocorreu um erro ao atualizar o usuário');
+        } catch (error) {
+            throw new Error('Ocorreu um erro ao atualizar o usuário');
+        }
+    }
 
-  update(info, id) {
-    const sql = "UPDATE profissional SET ? WHERE idprofissional=?";
-    return consulta(sql, [info, id], "Não foi possivel atualiar o usuário  em ProfissionalRepository ");
-  }
+    async delete(id) {
+        const sql = "DELETE FROM users WHERE id=?";
+        try {
+            return await consulta(sql, [id], 'Ocorreu um erro ao deletar o usuário');
+        } catch (error) {
+            throw new Error('Ocorreu um erro ao deletar o usuário');
+        }
+    }
+    async Login(user) {
+        const sql = "SELECT * FROM users WHERE email = ? AND senha = ?";
+        return consulta(sql, [user.email, user.senha], 'Ocorreu um erro ao buscar o usuário');
+      }
 
-  delete(id) {
-    const sql = "DELETE FROM profissional WHERE idprofissional=?";
-    return consulta(sql, id, "Não foi possivel apagar o usuário  em ProfissionalRepository");
-  }
+    
 }
+
 export default new profissionalRepository();

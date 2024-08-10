@@ -1,5 +1,6 @@
 import { Router } from "express";
 import profissionalController from "./app/controllers/profissionalController.js";
+import uploadPhotoController, { handleUploadPhoto, uploadPhoto } from "./app/controllers/uploadPhotoController.js";
 const router = Router();
 
 //rotabase
@@ -8,24 +9,27 @@ router.get("/", (req, res) => {
 });
 
 //rota de LOGIN
-router.post("/login", (req, res) => {
+router.post("/Login", (req, res) => {
   console.log("Solicitação de Login Recebida");
-  profissionalController.login(req, res);
+  profissionalController.Login(req, res);
 });
 
 //para listar todas os profissionais
-router.get("/profissionais/list", profissionalController.index);
+router.get("/users/list", profissionalController.index);
 
 //para criar um novo cadastro, enviando as info no corpo da requisição
 router.post("/cadastro", profissionalController.store);
 
 //para listar um profissional pelo id
-router.get("/profissional/list/:id", profissionalController.show);
+router.get("/users/list/:id", profissionalController.show);
 
 //para deletar um profissional pelo id
-router.delete("/profissional/delete/:id", profissionalController.delete);
+router.delete("/users/delete/:id", profissionalController.delete);
 
 //para atualizar um profissional pelo id
-router.put("/profissional/update/:id", profissionalController.update);
+router.put("/users/update/:id", profissionalController.update);
+
+//rota para upload de fotos
+router.post("/upload", uploadPhoto, handleUploadPhoto);
 
 export default router;
