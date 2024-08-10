@@ -8,22 +8,15 @@ router.get("/", (req, res) => {
 });
 
 //rota de LOGIN
-router.get("/login", profissionalController.login);
-
+router.post("/login", (req, res) => {
+  console.log("Solicitação de Login Recebida");
+  profissionalController.login(req, res);
+});
 
 //para listar todas os profissionais
 router.get("/profissionais/list", profissionalController.index);
 
 //para criar um novo cadastro, enviando as info no corpo da requisição
-/*
-
-{
-  "crp" : "3453452",
-  "nome" : "teste",
-  "senha" : "senhatestse",
-  "email" : "guilhermedsmarta@gmail.com"
-}
-*/
 router.post("/cadastro", profissionalController.store);
 
 //para listar um profissional pelo id
@@ -34,7 +27,5 @@ router.delete("/profissional/delete/:id", profissionalController.delete);
 
 //para atualizar um profissional pelo id
 router.put("/profissional/update/:id", profissionalController.update);
-
-
 
 export default router;

@@ -9,6 +9,7 @@ function Login() {
         crp: '',
         password: ''
     });
+
     const [errors, setErrors] = useState({});
 
     const handleInput = (event) => {
@@ -34,9 +35,11 @@ function Login() {
                     crp: values.crp,
                     senha: values.password,
                 };
+                
                 console.log('Enviando dados para o servidor:', data);
                 const response = await axios.post('http://localhost:5000/login', data);
                 console.log('Usuário encontrado com sucesso:', response.data);
+
                 setTimeout(() => {
                     navigate('/dashboard'); 
                 }, 2000);
