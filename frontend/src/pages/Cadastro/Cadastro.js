@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom'; 
 import CadastroValidacao from './CadastroValidacao.js';
 import axios from 'axios';
+import { LayoutComponents } from '../../components/layoutComponents/layoutComponents.js';
+import '../../components/styles.css';
+
 
 function Cadastro() {
 
@@ -36,7 +39,7 @@ function Cadastro() {
                  
                 };
 
-                const response = await axios.post('http://localhost:5000/cadastro', data);
+                await axios.post('http://localhost:3000/api/cadastro', data);
                 setMensagem('Cadastro realizado! Redirecionando para a página de login...');
                 alert('Cadastro realizado com sucesso!');
                 
@@ -54,34 +57,37 @@ function Cadastro() {
     };
 
     return (
-        <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
-            <div className='bg-white p-3 rounded h-85'>
-                <h2 className=''>Cadastro De Profissional</h2>
+        <LayoutComponents>
+    <img src='/img/tipografia.png' alt='Logo' className='logo' />
+        <div className='login-form'>
+            <div className='login-form-title'>
+                <h2 className=''>Cadastro</h2>
                 <form action='' onSubmit={handleSubmit}>
-                    <div className='mb-3'>
+                    <div className='login-form'>
                         <label htmlFor='email'><strong>Email</strong></label>
-                        <input type='text' placeholder='Email' onChange={handleInput} name='email' className='form-control rounded-0' />
+                        <input type='text' placeholder='Email' onChange={handleInput} name='email' className='input' />
                         <span>{errors.email && <span className='text-danger'>{errors.email}</span>}</span>
                     </div>
-                    <div className='mb-3'>
+                    <div className='wrap-input'>
                         <label htmlFor='nome'><strong>Nome</strong></label>
-                        <input type='text' placeholder='Nome' onChange={handleInput} name='nome' className='form-control rounded-0' />
+                        <input type='text' placeholder='Nome' onChange={handleInput} name='nome' className='input' />
                         <span>{errors.nome && <span className='text-danger'>{errors.nome}</span>}</span>
                     </div>
-                    <div className='mb-3'>
+                    <div className='wrap-input'>
                         <label htmlFor='senha'><strong>Senha</strong></label>
                         <p style={{ fontSize: '12px' }}>A senha deve conter pelo menos 8 caracteres.</p>
-                        <input type='password' placeholder='Senha do Profissional' onChange={handleInput} name='senha' className='form-control rounded-0' />
+                        <input type='password' placeholder='Senha' onChange={handleInput} name='senha' className='input	' />
                         <span>{errors.senha && <span className='text-danger'>{errors.senha}</span>}</span>
                     </div>
-                    <button type='submit' className='btn btn-success w-100'><strong>Cadastrar</strong></button>
-                    <p className='pt-3 small'>Ludemo.com a melhor plataforma de auxilio profissional.</p>
+                    <button type='submit' className='login-form-btn'><strong>Cadastrar</strong></button>
+                    <p className='m-4 mb-2 small text-center text-decoration-none'>Style Up, Inc.</p>
                     
                 </form>
                 <p className='text-success'>{mensagem}</p>
                 <Link to="/Login" className='btn bt-primary border w-100'>Retornar para Login</Link>
             </div>
         </div>
+        </LayoutComponents>
     );
 }
 

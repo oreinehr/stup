@@ -1,0 +1,45 @@
+.card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px; /* Add some padding to give the card more breathing space */
+}
+
+.card-img-top {
+  width: auto;
+  max-width: 80%; /* Make the image width 80% of the card's width */
+  height: auto;
+  max-height: 60%; /* Adjust height for a more rectangular shape */
+  object-fit: contain; /* Retain aspect ratio and fit within the card */
+  display: block;
+  margin: 0 auto;
+}
+
+  .btn-dark {
+    background-color: #000;
+    border: none;
+    padding: 10px 20px;
+  }
+
+  
+  
+  .nav-tabs .nav-link.active {
+    border-color: #dee2e6 #dee2e6 #f8f9fa;
+    font-weight: bold;
+  }
+
+  .create-button {
+    width: 150px; /* Adjust width as per your design */
+    height: 50px; /* Adjust height as per your design */
+    background-color: #000; /* Ensure it has the same color as in your design */
+    color: #fff;
+    font-size: 18px;
+    border-radius: 25px; /* Rounded corners */
+  }
+  
+  .d-flex {
+    height: 40vh; 
+  }

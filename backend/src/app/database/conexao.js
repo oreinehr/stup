@@ -15,6 +15,14 @@ conexao.connect((err) => {
   }
 });
 
+const saveItemToDatabase = (imageUrl, category) => {
+  const query = 'INSERT INTO roupas (imagem_url, categoria) VALUES (?, ?)';
+  connection.query(query, [imageUrl, category], (err, results) => {
+    if (err) throw err;
+    console.log('Item salvo com sucesso!');
+  });
+};
+
 /**
  *
  * @param {string} sql input do sql pro banco de dados

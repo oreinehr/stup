@@ -1,0 +1,31 @@
+/* src/components/ImageUploader.css */
+.image-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .image-card .card-img-top {
+    object-fit: cover;
+    height: 200px;
+  }
+  
+  .image-card .card-body {
+    padding: 0.5rem;
+  }
+  
+  .image-card .card-footer {
+    background-color: #f8f9fa;
+  }
+  
+  .upload-btn {
+    margin-top: 10px;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  

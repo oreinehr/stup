@@ -10,4 +10,6 @@ app.use(express.json());
 //usando o router do arquivo routes.js
 app.use(routes);
 
+
+
 export default app;

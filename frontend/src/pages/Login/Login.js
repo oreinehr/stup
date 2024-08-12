@@ -41,7 +41,7 @@ function Login() {
                 console.log('Usuário encontrado com sucesso:', response.data);
 
                 setTimeout(() => {
-                    navigate('/dashboard'); 
+                    navigate('/'); 
                 }, 2000);
             } catch (error) {
                 console.error('Erro ao autenticar usuário:', error);
@@ -53,6 +53,7 @@ function Login() {
 
     return (
         <LayoutComponents>
+             <img src='/img/tipografia.png' alt='Logo' className='logo' />
         <div className='login-form'>
             <div className='login-form-title'>
                 <h2><strong>Login</strong></h2>
@@ -67,7 +68,7 @@ function Login() {
                         className='input' />
                         <span>{errors.email && <span className='text-danger'>{errors.email}</span>}</span>
                     </div>
-                    <div className='mb-3'>
+                    <div className='wrap-input'>
                         <label className='form-label' htmlFor='senha'><strong>Senha</strong></label>
                         <input 
                         type='password' 
@@ -77,6 +78,7 @@ function Login() {
                         placeholder='Senha' 
                         className='input' />
                         <span>{errors.senha && <span className='text-danger'>{errors.senha}</span>}</span>
+                       
                     </div>
                     <button type='submit' className='login-form-btn'><strong>Login</strong></button>
                     <p className=' text small text-center m-4'>Style Up, Inc.</p>
