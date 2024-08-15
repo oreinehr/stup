@@ -30,14 +30,17 @@ export default function Home() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={toggleNavbar} />
                     <NavbarCollapse in={isOpen}>
                         <Nav className="ms-auto" id="basic-navbar-nav">
+                        <Nav.Item>
+                                <Link className='nav-link p-2 text-dark' to='/GuardaRoupa'>Guarda-Roupa</Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Link className='nav-link p-2 text-dark' to='/Look'>Looks</Link>
+                            </Nav.Item>
                             <Nav.Item>
                                 <Link className='nav-link p-2 text-dark' to='/Login'>Login</Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Link className='nav-link p-2 text-dark' to='/Cadastrar'>Cadastrar</Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Link className='nav-link p-2 text-dark' to='/Dashboard'>Dashboard</Link>
                             </Nav.Item>
                         </Nav>
                     </NavbarCollapse>

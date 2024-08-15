@@ -1,6 +1,7 @@
 import { consulta } from "../database/conexao.js";
 
 class profissionalRepository {
+
     async create(user) {
         const sql = "INSERT INTO users SET ?";
         try {
@@ -10,6 +11,25 @@ class profissionalRepository {
         }
     }
 
+    async createRoupa(roupa) {
+        const sql = "INSERT INTO roupas SET ?";
+        try {
+            const result = await consulta(sql, roupa, 'Ocorreu um erro ao inserir a roupa');
+            // Se precisar do ID inserido:
+            return { id: result.insertId, ...roupa };
+        } catch (error) {
+            console.error('Erro ao inserir roupa:', error);
+            throw new Error('Ocorreu um erro ao inserir a roupa');
+        }
+    }
+
+    async findRoupasByCategory(categoria) {
+        const query = 'SELECT * FROM roupas WHERE categoria = ?';
+        const [rows] = await db.query(query, [categoria]);
+        return rows;
+    }
+    
+    
     async findAll() {
         const sql = "SELECT * FROM users";
         try {
@@ -45,12 +65,11 @@ class profissionalRepository {
             throw new Error('Ocorreu um erro ao deletar o usuário');
         }
     }
+
     async Login(user) {
         const sql = "SELECT * FROM users WHERE email = ? AND senha = ?";
         return consulta(sql, [user.email, user.senha], 'Ocorreu um erro ao buscar o usuário');
-      }
-
-    
+    }
 }
 
 export default new profissionalRepository();

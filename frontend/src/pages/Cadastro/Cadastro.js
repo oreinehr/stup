@@ -6,6 +6,7 @@ import { LayoutComponents } from '../../components/layoutComponents/layoutCompon
 import '../../components/styles.css';
 
 
+
 function Cadastro() {
 
     const [mensagem, setMensagem] = useState('');
@@ -39,7 +40,7 @@ function Cadastro() {
                  
                 };
 
-                await axios.post('http://localhost:3000/api/cadastro', data);
+                await axios.post('http://localhost:5000/cadastro', data);
                 setMensagem('Cadastro realizado! Redirecionando para a página de login...');
                 alert('Cadastro realizado com sucesso!');
                 

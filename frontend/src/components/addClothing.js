@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormGroup, FormControl } from 'react-bootstrap';
+import { Button, Form, FormGroup } from 'react-bootstrap';
 
 
 function AddClothing() {

@@ -5,15 +5,16 @@ import './App.css';
 //pages
 import Login from './pages/Login/Login';
 import Cadastro from './pages/Cadastro/Cadastro';
-import Dashboard from './pages/Dashboard/Dashboard';
+import GuardaRoupa from './pages/GuardaRoupa/GuardaRoupa.js';
 import Home from './pages/Home/homePage'; 
 import AddClothing from './components/addClothing';
-import Video from './components/video'
+import Video from './pages/Home/homePage.js'
 import UserProfile from './components/UserProfile';
 import Layout2 from './components/layout2.js';
 import Cart from './components/Cart.js';
 import HomePage2 from './components/HomePage2.js';
 import Wardrobe from './components/wardrobe';
+import Look from './pages/Look/Looks.js'
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
             <Route path='/' element={<Home />}></Route>
             <Route path='/Login' element={<Login />}></Route>
             <Route path='/Cadastrar' element={<Cadastro />}></Route>
-            <Route path='/dashboard' element={<Dashboard />}></Route>
+            <Route path='/GuardaRoupa' element={<GuardaRoupa />}></Route>
             <Route path='/addClothing' element={<AddClothing />}></Route>
             <Route path='/Video' element={<Video />}></Route>
             <Route path='/UserProfile' element={<UserProfile/>}></Route>
@@ -35,7 +36,7 @@ function App() {
             <Route path='/cart' element={<Cart />}></Route>
             <Route path='/HomePage2' element={<HomePage2 />}></Route>
             <Route path='/wardrobe' element={<Wardrobe />}></Route>
-              
+            <Route path ='/look' element={<Look />}></Route>
           </Routes>
         </BrowserRouter>  
       </div>

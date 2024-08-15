@@ -5,7 +5,6 @@ import axios from 'axios';
 import { LayoutComponents } from '../../components/layoutComponents/layoutComponents.js';
 import '../../components/styles.css';
 
-
 function Login() {
     const [values, setValues] = useState({
         email: '',
@@ -25,10 +24,9 @@ function Login() {
         
         const validationErrors = validaLogin(values);
         setErrors(validationErrors);
-        console.log('Erros de Validação:', validationErrors);
         
         const hasErrors = Object.values(validationErrors).some(error => error !== '');
-
+    
         if (!hasErrors) {
             try {
                 const data = {
@@ -36,10 +34,12 @@ function Login() {
                     senha: values.senha,
                 };
                 
-                console.log('Enviando dados para o servidor:', data);
                 const response = await axios.post('http://localhost:5000/Login', data);
-                console.log('Usuário encontrado com sucesso:', response.data);
-
+    
+                // Armazenando dados do usuário no localStorage
+                const userData = response.data;
+                localStorage.setItem('user', JSON.stringify(userData));
+    
                 setTimeout(() => {
                     navigate('/'); 
                 }, 2000);
@@ -50,6 +50,7 @@ function Login() {
             console.log('Formulário contém erros de validação.');
         }
     };
+    
 
     return (
         <LayoutComponents>
