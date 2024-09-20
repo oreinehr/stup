@@ -68,8 +68,19 @@ class profissionalRepository {
 
     async Login(user) {
         const sql = "SELECT * FROM users WHERE email = ? AND senha = ?";
-        return consulta(sql, [user.email, user.senha], 'Ocorreu um erro ao buscar o usuário');
+        try {
+            return await consulta(sql, [user.email, user.senha], 'Ocorreu um erro ao realizar o login');
+        } catch (error) {
+            throw new Error('Ocorreu um erro ao realizar o login');
+        }
     }
+
+    async findRoupasByUserId(userId) {
+        const query = 'SELECT * FROM roupas WHERE userId = ?';
+        const [rows] = await connection.execute(query, [userId]);
+        return rows;
+    }
+    
 }
 
 export default new profissionalRepository();

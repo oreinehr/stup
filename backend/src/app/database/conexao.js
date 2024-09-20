@@ -26,22 +26,19 @@ conexao.connect((err) => {
   
 
 export const consulta = (sql, valores = [], mensagemReject) => {
-
   return new Promise((resolve, reject) => {
+      conexao.query(sql, valores, (erro, resultado) => {
+          if (erro) {
+              console.error('Erro na consulta:', erro);
+              return reject(new Error(mensagemReject));
+          }
 
-    conexao.query(sql, valores, (erro, resultado) => {
-
-      if (erro) {
-        console.error('erro', erro);
-        return reject(new Error(mensagemReject));
-      }
-
-      const rows = JSON.parse(JSON.stringify(resultado));
-     resolve(rows);
-    
-    });
+          const rows = JSON.parse(JSON.stringify(resultado));
+          console.log('Resultado da consulta:', rows); // Verifique este log
+          resolve(rows);
+      });
   });
-  
 };
+
 
 export default conexao;

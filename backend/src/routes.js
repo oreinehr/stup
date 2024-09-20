@@ -1,7 +1,7 @@
 import express from 'express';
+import profissionalController from './app/controllers/profissionalController.js';
 import multer from 'multer';
 import path from 'path';
-import profissionalController from './app/controllers/profissionalController.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -26,16 +26,13 @@ const upload = multer({ storage });
 
 // Configuração do middleware para servir arquivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-    
+
 // Rotas
 router.get("/", (req, res) => {
   res.send("Servidor On");
 });
 
-router.post("/login", (req, res) => {
-  console.log("Solicitação de Login Recebida");
-  profissionalController.Login(req, res);
-});
+router.post("/login", profissionalController.Login);
 
 router.get("/users/list", profissionalController.index);
 
@@ -48,18 +45,6 @@ router.delete("/users/delete/:id", profissionalController.delete);
 router.put("/users/update/:id", profissionalController.update);
 
 router.post("/upload", upload.single('image'), profissionalController.storeRoupa);
-
-// Exemplo com Express.js
-app.get('/guarda-roupa/:userId', async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const clothes = await Clothes.find({ userId }); // Supondo que 'Clothes' é um modelo do Mongoose
-    res.json(clothes);
-  } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar as roupas' });
-  }
-});
-
 
 // Usar as rotas no app
 app.use('/', router);
