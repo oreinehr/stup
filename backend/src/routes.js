@@ -46,6 +46,10 @@ router.put("/users/update/:id", profissionalController.update);
 
 router.post("/upload", upload.single('image'), profissionalController.storeRoupa);
 
+router.get("/roupas/:userId", profissionalController.getRoupas);
+
+
+
 // Usar as rotas no app
 app.use('/', router);
 

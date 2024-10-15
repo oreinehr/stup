@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import validaLogin from './LoginValidação';
@@ -12,44 +13,38 @@ function Login() {
     });
 
     const [errors, setErrors] = useState({});
+    const [mensagemErro, setMensagemErro] = useState('');
+    const [mensagemSucesso, setMensagemSucesso] = useState('');
+
+    const navigate = useNavigate();
 
     const handleInput = (event) => {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
-    const navigate = useNavigate();
-
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
-        const validationErrors = validaLogin(values);
-        setErrors(validationErrors);
-        
-        const hasErrors = Object.values(validationErrors).some(error => error !== '');
     
-        if (!hasErrors) {
-            try {
-                const data = {
-                    email: values.email,
-                    senha: values.senha,
-                };
-                
-                const response = await axios.post('http://localhost:5000/Login', data);
+        const data = {
+            email: values.email,
+            senha: values.senha,
+        };
     
-                // Armazenando dados do usuário no localStorage
-                const userData = response.data;
-                localStorage.setItem('user', JSON.stringify(userData));
-    
-                setTimeout(() => {
-                    navigate('/'); 
-                }, 2000);
-            } catch (error) {
-                console.error('Erro ao autenticar usuário:', error);
+        try {
+            const response = await axios.post('http://localhost:5000/login', data);
+            
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('userId', response.data.userId);
+                navigate('/');
+            } else {
+                setMensagemErro('Usuário não encontrado, verifique as credenciais.');
             }
-        } else {
-            console.log('Formulário contém erros de validação.');
+        } catch (error) {
+            console.error('Erro ao autenticar usuário:', error);
         }
     };
+    
     
 
     return (

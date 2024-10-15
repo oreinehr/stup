@@ -1,5 +1,5 @@
 import '../../components/styles.css';
-import Wardrobe from '../../components/styles.css';
+import Wardrobe from '../../components/wardrobe.js';
 import React from 'react';
 
 

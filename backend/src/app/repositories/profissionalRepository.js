@@ -1,4 +1,5 @@
 import { consulta } from "../database/conexao.js";
+import conexao from "../database/conexao.js";
 
 class profissionalRepository {
 
@@ -77,7 +78,7 @@ class profissionalRepository {
 
     async findRoupasByUserId(userId) {
         const query = 'SELECT * FROM roupas WHERE userId = ?';
-        const [rows] = await connection.execute(query, [userId]);
+        const [rows] = await conexao.execute(query, [userId]);
         return rows;
     }
     

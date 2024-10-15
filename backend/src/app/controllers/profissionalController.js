@@ -28,7 +28,7 @@ class profissionalController {
             }
 
             const token = jwt.sign({ id: result[0].id }, secretKey, { expiresIn: '1h' });
-            res.json({ token });
+            res.json({ token, userId: result[0].id });  
         } catch (error) {    
             console.error('Erro no Login:', error);
         }   
@@ -63,7 +63,7 @@ class profissionalController {
             res.status(500).json({ message: 'Ocorreu um erro ao inserir a roupa' });
         }
     }
-    
+
   async filterByCategory(req, res) {
       try {
           const { categoria } = req.params;
@@ -127,17 +127,25 @@ async store(req, res) {
         }
     }
 
-    async getUserWardrobe(req, res) {
+    async getRoupas(req, res) {
+        const { userId } = req.params;
         try {
-            const { userId } = req.params;
+            
+            if (!userId) {
+                return res.status(400).json({ message: 'User ID é obrigatório' });
+            }
             const roupas = await profissionalRepository.findRoupasByUserId(userId);
+            if (roupas.length === 0) {
+                return res.status(404).json({ message: 'Nenhuma roupa encontrada para esse usuário' });
+            }
             res.json(roupas);
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            console.error("Erro ao buscar roupas:", error);
+            res.status(500).json({ message: 'Erro ao buscar roupas' });
         }
     }
-    
 }
+
 
 
 
