@@ -1,11 +1,11 @@
 import mysql from "mysql";
 
 const conexao = mysql.createConnection({
-  host: "localhost",
+  host: "mysql.infocimol.com.br",
   port: 3306,
-  user: "root",
-  password: "Guireinehr02!",
-  database: "db_stup2",
+  user: "infocimol13",
+  password: "Guireinehr021",
+  database: "infocimol13",
 });
 
 conexao.connect((err) => {
@@ -41,4 +41,4 @@ export const consulta = (sql, valores = [], mensagemReject) => {
 };
 
 
-export default conexao;
+export default conexao; 

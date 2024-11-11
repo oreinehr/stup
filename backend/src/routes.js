@@ -4,6 +4,9 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import formidable from 'formidable';
+import looksController from './app/controllers/looksController.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,6 +51,42 @@ router.post("/upload", upload.single('image'), profissionalController.storeRoupa
 
 router.get("/roupas/:userId", profissionalController.getRoupas);
 
+router.delete('/roupas/:id', profissionalController.deleteRoupa.bind(profissionalController));
+app.post('/remove-background', (req, res) => {
+  const form = formidable({ multiples: true });
+
+  form.parse(req, async (err, fields, files) => {
+      if (err) {
+          return res.status(400).send('Erro ao processar a requisição.');
+      }
+
+      const file = files.image; // Assumindo que o arquivo de imagem é enviado com o nome 'image'
+
+      try {
+          const outputFilePath = './uploads/processed_image.png'; // Caminho para salvar a imagem processada
+
+          // Removendo o fundo da imagem
+          await removeBackgroundFromImageFile({
+              path: file.path,
+              apiKey: 'REMOVE_BG_API_KEY', // Substitua pela sua chave de API
+              size: 'auto',
+              outputFile: outputFilePath,
+          });
+
+          // Lê a imagem processada e envia como resposta
+          const processedImage = fs.readFileSync(outputFilePath);
+          res.set('Content-Type', 'image/png');
+          res.send(processedImage);
+
+          // Opcional: Remover o arquivo processado após o envio
+          fs.unlinkSync(outputFilePath);
+      } catch (error) {
+          console.error('Erro ao remover fundo da imagem:', error);
+          res.status(500).send('Erro ao processar a imagem.');
+      }
+  });
+});
+router.post('/looks', looksController.storeLook);
 
 
 // Usar as rotas no app

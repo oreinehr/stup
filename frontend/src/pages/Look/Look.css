@@ -1,0 +1,80 @@
+.looks-container {
+    max-width: 90vh;
+    margin: 0 auto;
+  }
+  
+  .selected-clothes-container {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+  }
+  
+  .clothing-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .clothing-image-small {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 8px;
+  }
+  
+  .trash-icon {
+    cursor: pointer;
+    color: red;
+  }
+  
+  .saved-looks-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .look-card {
+    width: 20vw;
+    height: 30vh;
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  .look-clothes-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+  
+  .clothing-image-grid {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  
+  .modal-custom {
+    max-width: 500px;
+    width: 100%;
+    height: auto; /* Altera para ajustar a altura conforme o conteúdo */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .look-detail-grid {
+    display: flex;
+    flex-direction: column; /* Alinha as roupas verticalmente */
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .clothing-image-detail {
+    width: 100%; /* A imagem ocupa toda a largura disponível */
+    max-width: 120px; /* Define um tamanho máximo para telas maiores */
+    height: auto;
+    object-fit: cover;
+    margin: 8px 0;
+  }

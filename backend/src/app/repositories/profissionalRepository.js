@@ -77,11 +77,45 @@ class profissionalRepository {
     }
 
     async findRoupasByUserId(userId) {
-        const query = 'SELECT * FROM roupas WHERE userId = ?';
-        const [rows] = await conexao.execute(query, [userId]);
-        return rows;
+        const sql = 'SELECT * FROM roupas WHERE userId = ?';
+        const results = await consulta(sql, [userId]);
+        console.log(results); // Adicione esse log para ver o retorno
+        return results;
     }
     
-}
+    async deleteRoupa(id) {
+        const sql = "DELETE FROM roupas WHERE id = ?";
+        try {
+            const result = await consulta(sql, [id], 'Ocorreu um erro ao deletar a roupa');
+            return result; // Retorna o resultado da operação
+        } catch (error) {
+            console.error("Erro ao deletar roupa:", error);
+            throw new Error('Erro ao deletar roupa');
+        }
+    }
+    
+    async createLook(data) {
+        try {
+          const newLook = await Look.create(data);
+          return newLook;
+        } catch (error) {
+          throw new Error('Erro ao criar look: ' + error.message);
+        }
+      }
+    
+      // Método para associar roupas a um look
+      async addClothesToLook(lookId, clothesIds) {
+        try {
+          const lookRoupas = clothesIds.map(roupaId => ({
+            lookId,
+            roupaId
+          }));
+          await LookRoupa.bulkCreate(lookRoupas);
+        } catch (error) {
+          throw new Error('Erro ao associar roupas ao look: ' + error.message);
+        }
+      }
+    };    
+
 
 export default new profissionalRepository();

@@ -350,24 +350,42 @@
 }
 
 .wardrobe-item {
-  border: 1px solid #ddd;
+  border: 2px solid #ddd; /* Borda mais visível */
   border-radius: 8px;
   overflow: hidden;
   width: 120px;
   text-align: center;
+  background-color: #f9f9f9; /* Fundo levemente contrastante */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efeito de hover */
+}
+
+.wardrobe-item:hover {
+  transform: translateY(-5px); /* Elevar o card ao passar o mouse */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5); /* Sombra mais forte ao hover */
+}
+
+.wardrobe-catalog {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Espaçamento maior entre os cards */
+  justify-content: center;
 }
 
 .wardrobe-image {
   width: 100%;
   height: 100px;
   object-fit: cover;
+  border-bottom: 1px solid #ddd; 
 }
 
 .wardrobe-category {
-  padding: 5px;
-  font-size: 0.9em;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #222;
+  font-weight: bold;
 }
-
 
   .update-button {
     background-color: #007bff;
@@ -539,4 +557,40 @@
   }
   
   
+}
+
+.looks-container {
+  padding-top: 100px; /* Para garantir que o conteúdo não fique atrás da navbar */
+}
+
+.clothes-selection, .selected-clothes {
+  margin: 20px 0;
+}
+
+.clothes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Define o número de colunas e o tamanho mínimo das roupas */
+  gap: 10px; /* Espaçamento entre as roupas */
+}
+
+.clothes-item {
+  position: relative;
+}
+
+.clothes-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px; /* Estilo opcional para arredondar os cantos */
+}
+
+.remove-look-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.remove-look-icon:hover {
+  color: darkred; /* Muda a cor quando passa o mouse */
 }
