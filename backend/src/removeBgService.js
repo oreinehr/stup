@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 const REMOVE_BG_API_KEY = '284y7ebCKWaJEscA6xhpMpLb';
-
+    
 const removeBackground = async (imagePath) => {
     const imageFile = fs.readFileSync(imagePath);
 

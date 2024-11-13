@@ -6,6 +6,7 @@ const conexao = mysql.createConnection({
   user: "infocimol13",
   password: "Guireinehr021",
   database: "infocimol13",
+  connectTimeout: 10000,
 });
 
 conexao.connect((err) => {

@@ -19,6 +19,7 @@ const Wardrobe = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const REMOVE_BG_API_KEY = '284y7ebCKWaJEscA6xhpMpLb'; 
 
@@ -245,6 +246,10 @@ const Wardrobe = () => {
       </Modal>
 
       {/* Formulário para adicionar nova roupa */}
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Adicionar Roupa</Modal.Title>
       <div className="form-group">
         <label htmlFor="category">Escolha uma categoria:</label>
         <select className="form-control" id="category" value={category} onChange={handleCategoryChange}>
@@ -260,7 +265,8 @@ const Wardrobe = () => {
           Adicionar Roupa
         </Button>
       </div>
-
+        </Modal.Header>
+      </Modal>
       {/* Filtros por categoria */}
       <div className="form-group mt-2">
         <label htmlFor="filterCategory">Filtrar por categoria:</label>
