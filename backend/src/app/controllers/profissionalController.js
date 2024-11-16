@@ -15,6 +15,7 @@ class profissionalController {
         }
     }
     
+    
     async Login(req, res) {
         try {
             const user = req.body;
@@ -47,24 +48,23 @@ class profissionalController {
                 return res.status(400).json({ message: 'Usuário e categoria são obrigatórios' });
             }
     
-            // Caminho da imagem enviada
             const imagePath = req.file.path;
-    
-            // Construir a URL da imagem (sem remover o fundo)
             const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${path.basename(imagePath)}`;
-            console.log("URL da imagem criada:", imageUrl); 
-            
+            console.log('Dados recebidos para salvamento:', { userId, categoria, imageUrl });
+    
             const roupa = {
-                userId,
+                userId: parseInt(userId),
+                categoria,
                 imagem_url: imageUrl,
-                categoria
             };
     
             const result = await profissionalRepository.createRoupa(roupa);
-            res.json(result);
+            console.log('Resultado da criação da roupa:', result);
+    
+            res.status(201).json(result);
         } catch (error) {
-            console.error("Erro no storeRoupa:", error);
-            res.status(500).json({ message: 'Ocorreu um erro ao inserir a roupa' });
+            console.error('Erro ao salvar roupa:', error.message);
+            res.status(500).json({ message: 'Erro ao salvar roupa no banco de dados.', error: error.message });
         }
     }
 
@@ -131,14 +131,22 @@ class profissionalController {
 
     async getRoupas(req, res) {
         const { userId } = req.params;
+        console.log('User ID recebido para buscar roupas:', userId); // Log para verificar o userId
+    
         try {
             if (!userId) {
+                console.warn('User ID é obrigatório, mas não foi fornecido.');
                 return res.status(400).json({ message: 'User ID é obrigatório' });
             }
+    
             const roupas = await profissionalRepository.findRoupasByUserId(userId);
+            console.log('Roupas encontradas:', roupas); // Log para verificar as roupas encontradas
+    
             if (roupas.length === 0) {
+                console.warn('Nenhuma roupa encontrada para o userId:', userId);
                 return res.status(404).json({ message: 'Nenhuma roupa encontrada para esse usuário' });
             }
+    
             res.json(roupas);
         } catch (error) {
             console.error("Erro ao buscar roupas:", error);
@@ -146,21 +154,26 @@ class profissionalController {
         }
     }
     
+    
     async deleteRoupa(req, res) {
         try {
             const id = req.params.id;
+            console.log('ID recebido para exclusão:', id); // Adiciona um log para verificar o ID recebido
+    
             const result = await profissionalRepository.deleteRoupa(id);
             
             if (result.affectedRows > 0) {
                 res.json({ message: 'Roupa excluída com sucesso.' });
             } else {
+                console.warn('Roupa não encontrada para exclusão:', id); // Adiciona um aviso caso a roupa não seja encontrada
                 res.status(404).json({ message: 'Roupa não encontrada.' });
             }
         } catch (error) {
             console.error('Erro ao excluir roupa:', error);
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ message: 'Erro ao excluir roupa.' });
         }
     }
+    
 
     async recommendLook(req, res) {
         try {

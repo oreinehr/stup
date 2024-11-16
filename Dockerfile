@@ -1,42 +1,24 @@
-# syntax = docker/dockerfile:1
+# Base da aplicação
+FROM node:20-slim
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=20.14.0
-FROM node:${NODE_VERSION}-slim as base
-
-LABEL fly_launch_runtime="NodeJS"
-
-# NodeJS app lives here
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV=production
-# Define NODE_OPTIONS to use legacy OpenSSL provider
-ENV NODE_OPTIONS=--openssl-legacy-provider
+# Copie o package.json e o package-lock.json para instalar as dependências
+COPY package*.json ./
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+# Instale todas as dependências necessárias
+RUN npm install --production
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install -y python-is-python3 pkg-config build-essential 
+# Copie o restante do código para o contêiner
+COPY . .
 
-# Install node modules
-COPY --link package.json package-lock.json ./
-RUN npm install
-
-# Run build with the legacy OpenSSL provider option
+# Gere o build da aplicação
 RUN npm run build
 
-# Copy application code
-COPY --link . .
+# Exponha a porta 8080
+EXPOSE 8080
 
-# Final stage for app image
-FROM base
+ENV PORT=8080
 
-# Copy built application from the build stage
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
-CMD [ "npm", "run", "start" ]
-    
+# Inicie a aplicação
+CMD ["npm", "start"]

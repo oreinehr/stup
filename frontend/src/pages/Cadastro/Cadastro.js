@@ -40,7 +40,7 @@ function Cadastro() {
                  
                 };
 
-                await axios.post('http://localhost:5000/cadastro', data);
+                await axios.post('http://localhost:8080/cadastro', data);
                 setMensagem('Cadastro realizado! Redirecionando para a página de login...');
                 alert('Cadastro realizado com sucesso!');
                 

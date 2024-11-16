@@ -1,10 +1,13 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import validaLogin from './LoginValidação';
 import axios from 'axios';
 import { LayoutComponents } from '../../components/layoutComponents/layoutComponents.js';
 import '../../components/styles.css';
+
+
+const api_url = process.env.REACT_APP_BASE_URL
+
 
 function Login() {
     const [values, setValues] = useState({
@@ -31,7 +34,7 @@ function Login() {
         };
     
         try {
-            const response = await axios.post('http://localhost:5000/login', data);
+            const response = await axios.post('http://localhost:8080/login', data);
             
             if (response.data.token) {
                 localStorage.setItem('token', response.data.token);

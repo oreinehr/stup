@@ -14,12 +14,13 @@ class profissionalRepository {
 
     async createRoupa(roupa) {
         const sql = "INSERT INTO roupas SET ?";
+        console.log('Tentando salvar roupa:', roupa);
         try {
             const result = await consulta(sql, roupa, 'Ocorreu um erro ao inserir a roupa');
-            // Se precisar do ID inserido:
+            console.log('Resultado da inserção:', result);
             return { id: result.insertId, ...roupa };
         } catch (error) {
-            console.error('Erro ao inserir roupa:', error);
+            console.error('Erro ao inserir roupa no banco:', error.message);
             throw new Error('Ocorreu um erro ao inserir a roupa');
         }
     }

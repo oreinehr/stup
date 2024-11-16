@@ -5,7 +5,6 @@ import './App.css';
 //pages
 import Login from './pages/Login/Login';
 import Cadastro from './pages/Cadastro/Cadastro';
-import GuardaRoupa from './pages/GuardaRoupa/GuardaRoupa.js';
 import Home from './pages/Home/homePage'; 
 import AddClothing from './components/addClothing';
 import Video from './pages/Home/homePage.js'

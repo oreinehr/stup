@@ -25,7 +25,7 @@ export default function Home() {
             <Navbar expand="lg" bg="white" className="shadow-sm py-3 px-4 fixed-top" style={{ height: '80px' }}>
                 <Container>
                     <NavbarBrand href='#'>
-                        <img src='img/tipografia.png' alt='Logo' style={{ height: '120px' }} />
+                        <img src='img/tipografia.png' alt='Logo' style={{ height: '160px' }} />
                     </NavbarBrand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={toggleNavbar} />
                     <NavbarCollapse in={isOpen}>

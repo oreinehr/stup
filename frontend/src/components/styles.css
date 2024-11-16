@@ -103,8 +103,23 @@
     background-color: #060606;
   }
 
+  .container-fullscreen {
+    position: relative;
+    width: 100vw;
+    height: calc(100vh); /* Altura total menos a altura do Navbar */
+    margin-top: 10vh; /* Alinha com a altura do Navbar fixo */
+  
+    justify-content: center;
+    align-items: center;
+  }
 
-
+  .fullscreen-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+  }
 
   h2 {
     text-align: center;
@@ -594,3 +609,133 @@
 .remove-look-icon:hover {
   color: darkred; /* Muda a cor quando passa o mouse */
 }
+
+@media (max-width: 768px) {
+  .saved-looks .row-cols-md-2 {
+    grid-template-columns: 1fr !important; /* Força uma coluna em telas menores */
+  }
+
+  .card {
+    width: 90% !important; /* Aumenta a largura em telas menores */
+    margin: 0 auto; /* Centraliza o card */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Zoom no vídeo */
+  .video-container video {
+    transform: scale(1.6); /* Aumenta o vídeo */
+    transition: transform 0.3s ease-in-out;
+    margin-top: 10vh;
+  }
+
+  body {
+    transform: scale(1.1); /* Aumenta todo o conteúdo */
+    transform-origin: center top; /* Define o ponto de origem para o zoom */
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .containerHome2 {
+    transform: scale(1.1); /* Aumenta todo o conteúdo */
+    transform-origin: center top; /* Define o ponto de origem para o zoom */
+    transition: transform 0.3s ease-in-out;
+    margin-left: 10vw;
+  }
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Garante que a altura ocupe toda a tela */
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  overflow: hidden; /* Garante que nada vaze do container */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem cubra todo o container */
+}
+
+.overlay-button {
+  position: absolute;
+  top: 50%; /* Centraliza verticalmente */
+  left: 50%; /* Centraliza horizontalmente */
+  transform: translate(-50%, -50%); /* Ajusta o ponto de referência para o centro */
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo semitransparente */
+  color: #fff; /* Cor do texto */
+  padding: 15px 30px; /* Tamanho do botão */
+  font-size: 1.2rem; /* Tamanho da fonte */
+  border: none; /* Remove bordas */
+  border-radius: 5px; /* Arredonda as bordas */
+  cursor: pointer; /* Cursor de mão ao passar o mouse */
+  z-index: 10; /* Garante que o botão fique acima da imagem */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Animações suaves */
+}
+
+.overlay-button:hover {
+  background-color: rgba(50, 50, 50, 0.8); /* Cor mais escura ao passar o mouse */
+  transform: translate(-50%, -50%) scale(1.1); /* Aumenta levemente o botão */
+}
+
+@media (max-width: 768px) {
+  .overlay-button {
+    font-size: 1rem; /* Reduz o tamanho do texto */
+    padding: 10px 20px; /* Reduz o tamanho do botão */
+  }
+
+  .image-container {
+    height: calc(100vh); /* Ajusta a altura para evitar sobreposição com o navbar */
+  }
+}
+
+
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.9);
+}
+
+.saved-look-card {
+  width: 25vw; /* Largura fixa */
+  height: 90vh; /* Aumente a altura para acomodar todas as imagens */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 4px solid black ; /* Borda azul */
+  border-color: #060606;
+  border-radius: 10px; /* Cantos arredondados */
+  background-color: #f9f9f9; /* Fundo claro */
+  box-shadow: 16px 4px 8px rgba(1, 1, 1, 1); 
+  transition: transform 0.3s ease, box-shadow 1s ease; /* Animação ao hover */
+}
+
+.saved-look-card:hover {
+  transform: translateY(-5px); /* Eleva o cartão ao passar o mouse */
+  box-shadow: 16px 16px 16px rgba(1, 1, 1, 1); /* Sombra mais forte */
+}
+
+.saved-look-image {
+  width: 80%; /* Largura relativa ao cartão */
+  height: 6vw; /* Altura maior para evitar corte */
+  object-fit: contain; /* Ajusta a imagem sem distorcer */
+  margin-bottom: 10px; /* Espaçamento entre as imagens */
+}
+
+
+
+@media (max-width: 768px) {
+  .saved-look-card {
+    width: 80%; /* Largura menor para dispositivos menores */
+    height: 80vh; /* Altura menor para dispositivos menores */
+
+    .saved-look-image {
+      height: 12vh;
+      
+    }
+  }
+}
+

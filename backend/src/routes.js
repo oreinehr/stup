@@ -6,7 +6,9 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import formidable from 'formidable';
 import looksController from './app/controllers/looksController.js';
+import fs from 'fs';
 
+const BASE_URL = 'https://backend-solitary-forest-6306.fly.dev';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,14 +16,19 @@ const __dirname = dirname(__filename);
 const app = express();
 const router = express.Router();
 
+const uploadPath = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+  console.log('Pasta uploads criada.');
+}
+
 // Configuração do Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, path.join(__dirname, '..', 'uploads')); // A pasta onde a imagem é salva
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
+    cb(null, `${Date.now()}-${file.originalname}`); // Nome único para cada arquivo
   }
 });
 
@@ -36,58 +43,41 @@ router.get("/", (req, res) => {
 });
 
 router.post("/login", profissionalController.Login);
-
 router.get("/users/list", profissionalController.index);
-
 router.post("/cadastro", profissionalController.store);
-
 router.get("/users/list/:id", profissionalController.show);
-
 router.delete("/users/delete/:id", profissionalController.delete);
-
 router.put("/users/update/:id", profissionalController.update);
 
-router.post("/upload", upload.single('image'), profissionalController.storeRoupa);
+// Alteração na rota para usar o `profissionalController.storeRoupa`
+router.post('/roupas/upload', upload.single('image'), profissionalController.storeRoupa);
 
-router.get("/roupas/:userId", profissionalController.getRoupas);
-
+router.get('/roupas/:userId', profissionalController.getRoupas);
 router.delete('/roupas/:id', profissionalController.deleteRoupa.bind(profissionalController));
-app.post('/remove-background', (req, res) => {
-  const form = formidable({ multiples: true });
 
-  form.parse(req, async (err, fields, files) => {
-      if (err) {
-          return res.status(400).send('Erro ao processar a requisição.');
-      }
+app.post('/api/removebg', upload.single('image'), async (req, res) => {
+  const formData = new FormData();
+  formData.append('image_file', req.file.buffer, req.file.originalname);
+  formData.append('size', 'auto');
 
-      const file = files.image; // Assumindo que o arquivo de imagem é enviado com o nome 'image'
+  try {
+    const response = await axios.post('https://api.remove.bg/v1.0/removebg', formData, {
+      headers: {
+        'X-Api-Key': 'WJUxsp9sviKJwd4wJNxUNvqe',
+        ...formData.getHeaders(),
+      },
+      responseType: 'arraybuffer',
+    });
 
-      try {
-          const outputFilePath = './uploads/processed_image.png'; // Caminho para salvar a imagem processada
-
-          // Removendo o fundo da imagem
-          await removeBackgroundFromImageFile({
-              path: file.path,
-              apiKey: 'REMOVE_BG_API_KEY', // Substitua pela sua chave de API
-              size: 'auto',
-              outputFile: outputFilePath,
-          });
-
-          // Lê a imagem processada e envia como resposta
-          const processedImage = fs.readFileSync(outputFilePath);
-          res.set('Content-Type', 'image/png');
-          res.send(processedImage);
-
-          // Opcional: Remover o arquivo processado após o envio
-          fs.unlinkSync(outputFilePath);
-      } catch (error) {
-          console.error('Erro ao remover fundo da imagem:', error);
-          res.status(500).send('Erro ao processar a imagem.');
-      }
-  });
+    res.set('Content-Type', 'image/png');
+    res.send(response.data);
+  } catch (error) {
+    console.error('Erro ao processar imagem:', error.response?.data || error.message);
+    res.status(500).json({ message: 'Erro ao processar imagem.' });
+  }
 });
-router.post('/looks', looksController.storeLook);
 
+router.post('/looks', looksController.storeLook);
 
 // Usar as rotas no app
 app.use('/', router);

@@ -1,234 +1,223 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Navbar, Nav, Container, NavbarBrand, Button, Modal, Form, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaTrash } from 'react-icons/fa';
-import './Look.css';
+import '../../components/styles.css';
+import { Navbar, Nav, Container, NavbarBrand, NavbarCollapse, Modal, Button } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import ImageLook from '../../components/imageLook';
 
 function Looks() {
-  const [clothes, setClothes] = useState([]);
-  const [selectedClothes, setSelectedClothes] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [lookTitle, setLookTitle] = useState('');
   const [savedLooks, setSavedLooks] = useState([]);
-  const [clothesToAdd, setClothesToAdd] = useState([]);
-  const [showDetailModal, setShowDetailModal] = useState(false);
-  const [selectedLook, setSelectedLook] = useState(null);
-  const userId = localStorage.getItem('userId');
+  const [showModal, setShowModal] = useState(false);
+  const [wardrobeItems, setWardrobeItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState({ casaco: null, camiseta: null, calca: null });
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchClothes = async () => {
+    // Carregar as roupas do guarda-roupa
+    const fetchWardrobeItems = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/roupas/${userId}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
-        setClothes(response.data);
+        const response = await fetch(`http://localhost:8080/roupas/${localStorage.getItem('userId')}`);
+        const data = await response.json();
+        setWardrobeItems(data);
       } catch (error) {
-        console.error('Erro ao carregar roupas:', error);
+        console.error('Erro ao carregar roupas do guarda-roupa:', error);
       }
     };
 
-    const fetchSavedLooks = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/looks/${userId}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
-        setSavedLooks(response.data);
-      } catch (error) {
-        console.error('Erro ao carregar looks salvos:', error);
-      }
-    };
+    fetchWardrobeItems();
+  }, []);
 
-    fetchClothes();
-    fetchSavedLooks();
-  }, [userId]);
+  const handleAddLook = () => {
+    if (!selectedItems.casaco || !selectedItems.camiseta || !selectedItems.calca) {
+      alert('Por favor, selecione uma peça para cada categoria: Casaco, Camiseta e Calça.');
+      return;
+    }
 
-  const addClothingToLook = (clothing) => {
-    setSelectedClothes((prevSelected) => {
-      if (prevSelected.length < 6 && !prevSelected.find((item) => item.id === clothing.id)) {
-        return [...prevSelected, clothing];
-      }
-      return prevSelected;
-    });
-  };
+    setSavedLooks((prevLooks) => [
+      ...prevLooks,
+      { id: Math.random().toString(36).substr(2, 9), ...selectedItems },
+    ]);
 
-  const removeClothingFromLook = (id) => {
-    setSelectedClothes(selectedClothes.filter((item) => item.id !== id));
-  };
-
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => {
-    setClothesToAdd([]);
+    setSelectedItems({ casaco: null, camiseta: null, calca: null });
     setShowModal(false);
   };
 
-  const handleAddSelectedClothes = () => {
-    setSelectedClothes((prevSelected) => {
-      const newSelected = [...prevSelected];
-      clothesToAdd.forEach((item) => {
-        if (newSelected.length < 6 && !newSelected.find((clothing) => clothing.id === item.id)) {
-          newSelected.push(item);
-        }
-      });
-      return newSelected;
-    });
-    handleCloseModal();
+  const handleSelectItem = (item, category) => {
+    setSelectedItems((prev) => ({
+      ...prev,
+      [category]: item,
+    }));
   };
 
-  const toggleClothingSelection = (item) => {
-    setClothesToAdd((prev) => {
-      if (prev.find((clothing) => clothing.id === item.id)) {
-        return prev.filter((clothing) => clothing.id !== item.id);
-      }
-      return [...prev, item];
-    });
-  };
-
-  const handleSaveLook = async () => {
-    if (lookTitle.trim() !== '' && selectedClothes.length > 0) {
-      console.log('Dados enviados para o servidor:', { title: lookTitle, clothes: selectedClothes.map(item => item.id) });
-      try {
-        const response = await axios.post('http://localhost:5000/looks', 
-          { title: lookTitle, clothes: selectedClothes.map(item => item.id) }, 
-          { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-        );
-        console.log(response.data.message);
-        setLookTitle('');
-        setSelectedClothes([]);
-        // Recarregar looks salvos
-        const fetchSavedLooks = async () => {
-          try {
-            const response = await axios.get(`http://localhost:5000/looks/${userId}`, {
-              headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            });
-            setSavedLooks(response.data);
-          } catch (error) {
-            console.error('Erro ao carregar looks salvos:', error);
-          }
-        };
-        fetchSavedLooks();
-      } catch (error) {
-        console.error("Erro ao salvar look:", error);
-        alert("Erro ao salvar look. Tente novamente.");
-      }
-    } else {
-      alert("Por favor, adicione um título e selecione roupas.");
-    }
-  };
-
-  const handleShowDetailModal = (look) => {
-    setSelectedLook(look);
-    setShowDetailModal(true);
-  };
-
-  const handleCloseDetailModal = () => {
-    setShowDetailModal(false);
-    setSelectedLook(null);
+  const handleEnterCard = (lookId) => {
+    // Redirecionar para a página do look
+    navigate(`/look/${lookId}`);
   };
 
   return (
     <div>
+       <div className="image-look mt-4">
+      <ImageLook src="1.png" alt="Imagem de fundo"/>
+      </div>
       <Navbar expand="lg" bg="white" className="shadow-sm py-3 px-4 fixed-top" style={{ height: '80px' }}>
         <Container>
           <NavbarBrand href="#">
-            <img src='img/tipografia.png' alt='Logo' style={{ height: '120px' }} />
+            <img src="img/tipografia.png" alt="Logo" style={{ height: '160px' }} />
           </NavbarBrand>
-          <Nav className="ms-auto">
-            <Link className='nav-link p-2 text-dark' to='/GuardaRoupa'>Guarda-Roupa</Link>
-            <Link className='nav-link p-2 text-dark' to='/Look'>Looks</Link>
-            <Link className='nav-link p-2 text-dark' to='/Login'>Login</Link>
-            <Link className='nav-link p-2 text-dark' to='/Cadastrar'>Cadastrar</Link>
-          </Nav>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <NavbarCollapse>
+            <Nav className="ms-auto" id="basic-navbar-nav">
+              <Nav.Item>
+                <Link className="nav-link p-2 text-dark" to="/GuardaRoupa">Guarda-Roupa</Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Link className="nav-link p-2 text-dark" to="/Look">Looks</Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Link className="nav-link p-2 text-dark" to="/Login">Login</Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Link className="nav-link p-2 text-dark" to="/Cadastrar">Cadastrar</Link>
+              </Nav.Item>
+            </Nav>
+          </NavbarCollapse>
         </Container>
       </Navbar>
+      
+     
+    
 
-      <div className="looks-container mt-5 pt-5">
-        <h2 className="looks-title">Looks</h2>
-
-        <Button variant="dark" onClick={handleShowModal}>Adicionar Roupas</Button>
-
-        <div className="selected-clothes-container mt-4">
-          {selectedClothes.map((item) => (
-            <div key={item.id} className="clothing-item">
-              <img src={item.imagem_url || item.image} alt="Roupa" className="clothing-image-small" />
-              <FaTrash className="trash-icon" onClick={() => removeClothingFromLook(item.id)} />
-            </div>
-          ))}
+      <div className="looks-container mt-0">
+        <button className="add-look-button mb-3" onClick={() => setShowModal(true)}>
+          Criar Look
+        </button>
+      </div>
+      
+      <div className="saved-looks text-center">
+  <div
+    className="d-flex flex-wrap justify-content-center"
+    style={{
+      gap: '4vw', // Espaçamento entre os cartões
+      margin: 'auto',
+      
+    }}
+  >
+    {savedLooks.map((look) => (
+      <div
+        className="card shadow-sm saved-look-card"
+        key={look.id}
+        onClick={() => handleEnterCard(look.id)}
+      >
+        <div className="card-body">
+          <img
+            src={look.casaco?.imagem_url}
+            alt="Casaco"
+            className="saved-look-image"
+          />
+          <img
+            src={look.camiseta?.imagem_url}
+            alt="Camiseta"
+            className="saved-look-image"
+          />
+          <img
+            src={look.calca?.imagem_url}
+            alt="Calça"
+            className="saved-look-image"
+          />
         </div>
+      </div>
+    ))}
+  </div>
+</div>
+      {/* Modal para selecionar roupas */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Escolher Roupas</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="wardrobe-items">
+            <div className="row">
+              <h5 className="col-12 text-center">Casacos</h5>
+              {wardrobeItems
+                .filter((item) => item.categoria === 'casaco')
+                .map((item) => (
+                  <div className="col-md-4 mb-2" key={item.roupa_id}>
+                    <div
+                      className={`card shadow-sm ${
+                        selectedItems.casaco?.roupa_id === item.roupa_id ? 'border-primary' : ''
+                      }`}
+                      onClick={() => handleSelectItem(item, 'casaco')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <img
+                        src={item.imagem_url}
+                        alt="Casaco"
+                        className="card-img-top"
+                        style={{ height: '150px', objectFit: 'cover' }}
+                      />
+                    </div>
+                  </div>
+                ))}
 
-        <Form.Control
-          type="text"
-          placeholder="Nome do Look"
-          value={lookTitle}
-          onChange={(e) => setLookTitle(e.target.value)}
-          className="mt-3"
-        />
+              <h5 className="col-12 text-center mt-3">Camisetas</h5>
+              {wardrobeItems
+                .filter((item) => item.categoria === 'camiseta')
+                .map((item) => (
+                  <div className="col-md-4 mb-2" key={item.roupa_id}>
+                    <div
+                      className={`card shadow-sm ${
+                        selectedItems.camiseta?.roupa_id === item.roupa_id ? 'border-primary' : ''
+                      }`}
+                      onClick={() => handleSelectItem(item, 'camiseta')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <img
+                        src={item.imagem_url}
+                        alt="Camiseta"
+                        className="card-img-top"
+                        style={{ height: '150px', objectFit: 'cover' }}
+                      />
+                    </div>
+                  </div>
+                ))}
 
-        <Button variant="dark" onClick={handleSaveLook} className="mt-3">Confirmar Look</Button>
-
-        <div className="saved-looks-grid mt-4">
-          {savedLooks.map((look, index) => (
-            <Card key={index} className="look-card" onClick={() => handleShowDetailModal(look)}>
-              <Card.Body>
-                <Card.Title className="text-center">{look.title}</Card.Title>
-                <div className="look-clothes-grid">
-                  {look.clothes.map((item, i) => (
-                    <img key={i} src={item.imagem_url || item.image} alt="Roupa" className="clothing-image-grid" />
-                  ))}
-                </div>
-              </Card.Body>
-            </Card>
-          ))}
-        </div>
-
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Adicionar Roupas</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h5>Selecione até 3 peças de roupas:</h5>
-            <div className="clothes-grid">
-              {clothes.map((item) => (
-                <div key={item.id} className="clothes-card" onClick={() => toggleClothingSelection(item)}>
-                  <img
-                    src={item.imagem_url || item.image}
-                    alt="Roupa"
-                    className="clothes-image"
-                    style={{
-                      border: clothesToAdd.find((clothing) => clothing.id === item.id) ? '2px solid blue' : 'none',
-                    }}
-                  />
-                </div>
-              ))}
+              <h5 className="col-12 text-center mt-3">Calças</h5>
+              {wardrobeItems
+                .filter((item) => item.categoria === 'calca')
+                .map((item) => (
+                  <div className="col-md-4 mb-2" key={item.roupa_id}>
+                    <div
+                      className={`card shadow-sm ${
+                        selectedItems.calca?.roupa_id === item.roupa_id ? 'border-primary' : ''
+                      }`}
+                      onClick={() => handleSelectItem(item, 'calca')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <img
+                        src={item.imagem_url}
+                        alt="Calça"
+                        className="card-img-top"
+                        style={{ height: '150px', objectFit: 'cover' }}
+                      />
+                    </div>
+                  </div>
+                ))}
             </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>Fechar</Button>
-            <Button variant="primary" onClick={handleAddSelectedClothes} disabled={clothesToAdd.length > 3}>Confirmar</Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal
-          show={showDetailModal}
-          onHide={handleCloseDetailModal}
-          dialogClassName="modal-custom"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedLook?.title}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="look-detail-grid">
-              {selectedLook && selectedLook.clothes.map((item, i) => (
-                <img key={i} src={item.imagem_url || item.image} alt="Roupa" className="clothing-image-detail" />
-              ))}
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseDetailModal}>Fechar</Button>
-          </Modal.Footer>
-        </Modal>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Fechar
+          </Button>
+          <Button variant="primary" onClick={handleAddLook}>
+            Salvar Look
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <div className="image-look mt-0">
+      <ImageLook src="2.png" alt="Imagem de fundo"/>
       </div>
     </div>
+  
   );
 }
 
